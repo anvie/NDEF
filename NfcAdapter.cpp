@@ -1,4 +1,5 @@
 #include <NfcAdapter.h>
+#include <debug.h>
 
 NfcAdapter::NfcAdapter(PN532Interface &interface)
 {
@@ -16,7 +17,7 @@ void NfcAdapter::begin(boolean verbose)
 
     uint32_t versiondata = shield->getFirmwareVersion();
 
-    if (! versiondata)
+    if (!versiondata)
     {
         Serial.print(F("Didn't find PN53x board"));
         while (1); // halt
@@ -66,7 +67,8 @@ boolean NfcAdapter::format()
     }
     else
     {
-        Serial.print(F("Unsupported Tag."));
+        MSGERROR(F("NfcAdapter::format: Unsupported Tag, uidLength: "));
+        MSGPRINT(uidLength);MSGPRINT("\n");
         success = false;
     }
     return success;
